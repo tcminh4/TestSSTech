@@ -57,7 +57,7 @@ dotnet run --project src/PartnerTransactions.Api --launch-profile http
 ```
 
 Swagger: http://localhost:5236/swagger  
-#Default API key: `local-dev-api-key`
+##Default API key: `local-dev-api-key`
 
 ## Run the tests
 
