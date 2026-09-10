@@ -7,7 +7,7 @@
 The HTTP controller stays thin. `PartnerTransactionService` owns the flow: **validate → verify partner → publish**.
 
 - **Validation** — FluentValidation. Amount must be `> 0`, currency must be ISO 4217, all fields required. Failures return a consistent `400` body.
-- **Partner verification** — `GET /internal/partner-verification/{partnerId}` stands in for an external service. It throws `TimeoutException` 30% of the time and returns a valid response 70% of the time (`P-*` IDs succeed). The real caller is a typed `HttpClient` (`IPartnerVerificationClient`).
+- **Partner verification** — `GET /internal/partner-verification/{partnerId}` stands in for an external service. It throws `TimeoutException` 30% of the time and returns a valid response 70% of the time. The real caller is a typed `HttpClient` (`IPartnerVerificationClient`).
 - **Resilience** — Polly via `AddStandardResilienceHandler` (3 retries on timeouts/5xx). After retries are exhausted the incoming request still completes with `503` instead of crashing.
 - **Messaging** — `ITransactionMessagePublisher` is the contract; `RabbitMqTransactionPublisher` is the RabbitMQ implementation. The service depends only on the interface so tests can substitute an in-memory publisher.
 - **Errors** — `IExceptionHandler` maps unhandled exceptions (including mock timeouts) to `{ error, message, traceId }`.
@@ -57,7 +57,7 @@ dotnet run --project src/PartnerTransactions.Api --launch-profile http
 ```
 
 Swagger: http://localhost:5236/swagger  
-Default API key: `local-dev-api-key`
+#Default API key: `local-dev-api-key`
 
 ## Run the tests
 
